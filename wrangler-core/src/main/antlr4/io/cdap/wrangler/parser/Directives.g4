@@ -50,8 +50,10 @@ statements
  ;
 
 directive
- : command
-  (   codeblock
+  : command
+    ( byteSizeValue 
+    | timeDurationValue 
+    | codeblock
     | identifier
     | macro
     | text
@@ -64,9 +66,15 @@ directive
     | stringList
     | numberRanges
     | properties
-  )*?
+    )*?
+  ;
+byteSizeValue
+  : BYTE_SIZE
   ;
 
+timeDurationValue
+  : TIME_DURATION
+  ;
 ifStatement
   : ifStat elseIfStat* elseStat? '}'
   ;
@@ -130,6 +138,13 @@ propertyList
 property
  : Identifier '=' ( text | number | bool )
  ;
+BYTE_SIZE
+  : [0-9]+ (('KB'|'MB'|'GB'|'TB')?)
+  ;
+
+TIME_DURATION
+  : [0-9]+ (('ms'|'s'|'m'|'h')?)
+  ;
 
 numberRanges
  : numberRange ( ',' numberRange)*
